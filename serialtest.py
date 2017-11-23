@@ -2,7 +2,7 @@
 
 import serial
 
-port = serial.Serial("/dev/serial0", serial.baudrate=9600, serial.parity=PARITY_NONE, serial.bytesize=EIGHTBITS, serial.stopbits=STOPBITS_ONE)
+port = serial.Serial("/dev/serial0", 9600)
 
 while True:
 	data = port.read()

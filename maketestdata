@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python3 serialcfgp3.py > testdata 2>&1
