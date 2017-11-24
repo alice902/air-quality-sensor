@@ -13,3 +13,6 @@ Traceback (most recent call last):
   File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 472, in read
     ready, _, _ = select.select([self.fd, self.pipe_abort_read_r], [], [], timeout.time_left())
 KeyboardInterrupt
+2017-11-23 06:37:57,196 INFO     Warming up for 30 seconds
+2017-11-23 06:38:27,730 INFO     @ 30.53	Packet(pm1_std=38, pm25_std=59, pm10_std=65, pm01_atm=29, pm2_5_atm=45, pm10_atm=57, count_03um=6417, count_05um=1916, count_1um=337, count_2_5um=38, count_5um=8, count_10um=0)
+
