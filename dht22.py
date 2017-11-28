@@ -1,38 +1,21 @@
 #!/usr/bin/env python3
 
 import Adafruit_DHT
+import requests
 import time
-import influxdb
 
-from influxdb import InfluxDBClient
+USER = 'root'										# database credentials: username	
+PASS = 'root'										# password
+URL_STRING = 'http://localhost:8086/write?db=raspi_measurements'			# and database url
+SLEEP_TIME = 60
 
-host = 'localhost'
-port = '8086'
-username = 'root'
-password = 'root'
-dbname = 'environment'
-client = InfluxDBClient(host, port, username, password, dbname)
+try:
+	while True:									# infinite loop
+		humidity, temperature = Adafruit_DHT.read_retry(22, 4)			# dht22 sensor readings
+		raw_data = "temp_and_hum temperature={},humidity={}"			# raw string (request pattern)
+		data_string = raw_data.format(round(temperature,1),round(humidity,1)) 	# formatted string
+		r = requests.post(URL_STRING, auth=(USER,PASS), data=data_string)	# database request (returns code 204)
+		time.sleep(SLEEP_TIME)							# delay
 
-def get_data_points(temperature,timestamp):
-	json_body = [
-    	{
-        	"measurement": "temperature_celcius",
-       		 "tags": {
-        	    "host": "raspi",
-       		    "region": "kitchen"
-       		 },
-       	 	"time": timestamp,
-       		"fields": {
-       		     "value": temperature
-       			 }
-    }
-]
-	return json_body
-
-while True:
-	timestamp = time.ctime()
-	humidity, temperature = Adafruit_DHT.read_retry(22, 4)
-	print('{} temp: {:.1f}*C humidity: {:.1f}%'.format(timestamp, temperature, humidity))
-	json_body = get_data_points(temperature,timestamp)
-	client.write_points(json_body)
-	time.sleep(10)
+except KeyboardInterrupt:								# keyboard interrupt exception
+	pass
