@@ -14,8 +14,10 @@ USER = 'root'																			# database credentials: username
 PASS = 'root'																			# password
 URL_STRING = 'http://localhost:8086/write?db=raspi_measurements'						# and database url
 SLEEP_TIME = 60																			# delay time between each measurement
+FAN_WARMUP_TIME = 30
 
 def main():
+	time.sleep(FAN_WARMUP_TIME)
 	try:
 		while True:																		# infinite loop
 			data_frame = bytearray(32)													# frame initialisation
